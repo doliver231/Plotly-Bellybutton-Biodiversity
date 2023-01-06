@@ -133,7 +133,7 @@ function buildCharts(sample) {
       showlegend: false,
       xaxis: {title: "OTU ID", automargin: true},
       yaxis: {automargin: true},
-      //margin: { t: 50, r: 50, l: 50, b: 50 },
+      margin: { t: 50, r: 50, l: 50, b: 50 },
       hovermode: "closest"
     };
     // Deliverable 2: 3. Use Plotly to plot the data with the layout.
