@@ -61,48 +61,123 @@ function buildCharts(sample) {
     console.log(data);
 
     // Deliverable 1: 3. Create a variable that holds the samples array. 
-
+    var samplesArray = data.samples;  
     // Deliverable 1: 4. Create a variable that filters the samples for the object with the desired sample number.
-
+    var selectedIdSamples = samplesArray.filter(data => data.id == sample);
     // Deliverable 3: 1. Create a variable that filters the metadata array for the object with the desired sample number.
-
+    var metadata_SelId = data.metadata.filter(data => data.id == sample);
     // Deliverable 1: 5. Create a variable that holds the first sample in the array.
-
+    var firstSample = selectedIdSamples[0];
     // Deliverable 3: 2. Create a variable that holds the first sample in the metadata array.
-
+  
     // Deliverable 1: 6. Create variables that hold the otu_ids, otu_labels, and sample_values.
-
+    var otuIds = firstSample.otu_ids;
+    var otuLabels = firstSample.otu_labels;
+    var sampleValues = firstSample.sample_values;
     // Deliverable 3: 3. Create a variable that holds the washing frequency.
-
+    var washFreq = +metadata_SelId[0].wfreq;
 
     // Deliverable 1: 7. Create the yticks for the bar chart.
     // Hint: Get the the top 10 otu_ids and map them in descending order 
     // so the otu_ids with the most bacteria are last. 
-    var yticks = 
+    var yticks = otuIds.slice(0,10).map(id => "OTU " + id).reverse();
+    console.log(yticks);
+
+    // To make figures automatically resized when the browser window size changes:
+    var config = {responsive:true};
 
     // Deliverable 1: 8. Create the trace for the bar chart. 
-    var barData = [
-
-    ];
+    var barData = [{
+      x: sampleValues.slice(0,10).reverse(),
+      text: otuLabels.slice(0,10).reverse(),
+      type: "bar"
+    }];
 
     // Deliverable 1: 9. Create the layout for the bar chart. 
     var barLayout = {
-
+      title: "Top 10 Bacteria Cultures Found",
+      yaxis: {
+        tickmode: "array",
+        tickvals: [0,1,2,3,4,5,6,7,8,9],
+        ticktext: yticks
+      },
+      annotations: [{
+        xref: 'paper',
+        yref: 'paper',
+        x: 0.5,
+        xanchor: 'center',
+        y: -0.25,
+        yanchor: 'center',
+        text: 'The bar chart displays the top 10 bacterial species (OTUs)<br>with the number of samples found in your belly button',
+        showarrow: false
+      }]
     };
 
     // Deliverable 1: 10. Use Plotly to plot the data with the layout. 
-
+    Plotly.newPlot("bar", barData, barLayout, config);
     // Deliverable 2: 1. Create the trace for the bubble chart.
-
+    var bubbleData = [{
+      x: otuIds,
+      y: sampleValues,
+      text: otuLabels,
+      mode: 'markers',
+      marker: {
+        size: sampleValues,
+        color: otuIds,
+        colorscale: "Earth"
+      }
+    }];
     // Deliverable 2: 2. Create the layout for the bubble chart.
-
+    var bubbleLayout = {
+      title: 'Bacteria Cultures Per Sample',
+      showlegend: false,
+      xaxis: {title: "OTU ID", automargin: true},
+      yaxis: {automargin: true},
+      //margin: { t: 50, r: 50, l: 50, b: 50 },
+      hovermode: "closest"
+    };
     // Deliverable 2: 3. Use Plotly to plot the data with the layout.
-    
+    Plotly.newPlot("bubble", bubbleData, bubbleLayout, config);
     // Deliverable 3: 4. Create the trace for the gauge chart.
-    
+    var gaugeTrace = [
+      {
+        domain: { x: [0, 1], y: [0, 1] },
+        value: washFreq,
+        title: { text: "<b>Belly Button Washing Frequency</b><br>Scrubs per week"},
+        type: "indicator",
+        mode: "gauge+number",
+        gauge: {
+          axis: {
+            range: [null, 10],
+            tickmode: "array",
+            tickvals: [0,2,4,6,8,10],
+            ticktext: [0,2,4,6,8,10]
+          },
+          bar: {color: "black"},
+          steps: [
+            { range: [0, 2], color: "red" },
+            { range: [2, 4], color: "orange" },
+            { range: [4, 6], color: "yellow" },
+            { range: [6, 8], color: "lime" },
+            { range: [8, 10], color: "green" }]
+        }
+      }
+    ];
     // Deliverable 3: 5. Create the layout for the gauge chart.
-
+    var gaugeLayout = { 
+      autosize: true,
+      annotations: [{
+        xref: 'paper',
+        yref: 'paper',
+        x: 0.5,
+        xanchor: 'center',
+        y: 0,
+        yanchor: 'center',
+        text: "The gauge displays your belly button weekly washing frequency",
+        showarrow: false
+      }]
+    };
     // Deliverable 3: 6. Use Plotly to plot the gauge data and layout.
-
+    Plotly.newPlot("gauge", gaugeTrace, gaugeLayout, config);
   });
 }

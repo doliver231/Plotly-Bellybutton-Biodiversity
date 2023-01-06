@@ -1,0 +1,25 @@
+body {
+
+    color: #f0ecec;
+  }
+
+.jumbotron {
+    background-image: url("../images/bacteria.png");
+    background-size: 100% 230%;
+    text-align: center;
+  }
+
+.col-md-2 {
+    text-align: center;
+}
+
+.col-md-5 {
+    border: 0.5rem outset pink;
+    background-color: #e5436c;
+    padding: 5px;
+}
+
+.col-md-12 {
+    border: 0.5rem outset pink;
+    background-color: #e5436c;
+}
